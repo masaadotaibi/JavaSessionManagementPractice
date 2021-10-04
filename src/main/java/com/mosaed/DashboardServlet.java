@@ -6,6 +6,7 @@ import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,8 +24,6 @@ public class DashboardServlet extends HttpServlet {
      */
     public DashboardServlet() {
         super();
-        // TODO Auto-generated constructor stub
-        System.out.println("Reached #3");
     }
 
 	/**
@@ -32,21 +31,27 @@ public class DashboardServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		
-		System.out.println("Reached #5");
+		Cookie [] cookies = req.getCookies();
 		
-		HttpSession session = req.getSession();
+		String username = "";
+		String password = "";
 			
-		String username = (String) session.getAttribute("username");
+		for(Cookie c: cookies) {
+			if(c.getName().equals("username")) {
+				username = c.getValue();
+				System.out.println("Username => " + username);
+			}
+			if(c.getName().equals("password")) {
+				password = c.getValue();
+				System.out.println("Password => " + password);
+			}
+		}
 		
 		PrintWriter out = res.getWriter();
 		
 		out.println("Hi " + username + ". You had a successful login in " + new Date());
+		out.println("Your current password is => " + password);
 		
-		session.removeAttribute("username");
-		
-		String removedUser = (String) session.getAttribute("username");
-		
-		out.println("You have left " + removedUser);
 	}
 
 	/**

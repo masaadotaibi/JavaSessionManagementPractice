@@ -3,6 +3,7 @@ package com.mosaed;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,16 +40,15 @@ public class LoginServlet extends HttpServlet {
 		String username = req.getParameter("username");
 		String password = req.getParameter("password");
 		
-		HttpSession session = req.getSession();
+		Cookie userCookie = new Cookie("username", username);
 		
-		session.setAttribute("username", username);
-		session.setAttribute("password", password);
+		Cookie passCookie = new Cookie("password", password);
 		
-		System.out.println("Reached #1");
+		res.addCookie(userCookie);
+		res.addCookie(passCookie);
 		
 		res.sendRedirect("dashboard");
 		
-		System.out.println("Reached #2");
 	}
 
 }
